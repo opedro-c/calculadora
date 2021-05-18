@@ -1,14 +1,10 @@
 def aux():
     pass
 
-
-def click_number(current_number, new_number):
-    if current_number['text'] == '0':
-        current_number.config(text='')
-    current_number.config(text=current_number['text'] + new_number)
-
-def backspace(current_number):
-    if len(current_number['text']) > 1:
-        current_number.config(text=current_number['text'][:-1])
+def formatar_expressao(expressao):
+    if '**' in expressao:
+        return expressao.replace('**', '^')
+    elif '*' in expressao:
+        return expressao.replace('*', 'x')
     else:
-        current_number.config(text='0')
+        return expressao
