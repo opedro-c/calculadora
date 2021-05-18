@@ -26,15 +26,6 @@ class Calculadora:
 
 
     @classmethod
-    def mostrar_resultado(cls, current_number):
-        try:
-            Calculadora.expressao = Calculadora.expressao + current_number['text']
-            current_number.config(text=str(eval(Calculadora.expressao)))
-            Calculadora.mudar_numero = True
-        except SyntaxError:
-            print('Erro de sintaxe ao mostrar resultado')
-    
-    @classmethod
     def somar(cls, current_number):
         Calculadora.mostrar_resultado(current_number)
         Calculadora.expressao = current_number['text'] + '+'
@@ -56,6 +47,29 @@ class Calculadora:
     def dividir(cls, current_number):
         Calculadora.mostrar_resultado(current_number)
         Calculadora.expressao = current_number['text'] + '/'
+    
+    
+    @classmethod
+    def potencia(cls, current_number):
+        Calculadora.mostrar_resultado(current_number)
+        Calculadora.expressao = current_number['text'] + '**'
+    
+    
+    @classmethod
+    def absoluto(cls, current_number):
+        Calculadora.expressao = f"abs({current_number['text']})"
+        current_number.config(text='')
+        Calculadora.igual(current_number)
+        
+        
+    @classmethod
+    def mostrar_resultado(cls, current_number):
+        try:
+            Calculadora.expressao = Calculadora.expressao + current_number['text']
+            current_number.config(text=str(eval(Calculadora.expressao)))
+            Calculadora.mudar_numero = True
+        except SyntaxError:
+            print('Erro de sintaxe ao mostrar resultado')
     
     
     @classmethod
