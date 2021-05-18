@@ -1,15 +1,34 @@
 from tkinter import *
-from utilitarios import aux
+from utilitarios import verificar_colar
 from Calculadora import Calculadora as calc
+from pyperclip import copy, paste
 
+
+# Janela
 app = Tk()
 app.geometry('300x340')
 app.title('Calculadora')
-app.config(bg='white')
+
+
+# Display
 frame = Frame(app, bg='white', borderwidth=1, relief='solid', width=280, height=30)
 frame.place(x=10, y=10)
 current_number = Label(frame, text='0', bg='white', fg='black', width=34, anchor=E)
 current_number.place(x=0, y=5)
+
+# Barra de menus
+barra_menus = Menu(app, bg='#dde', fg='black')
+
+menu_arquivo = Menu(barra_menus, tearoff=0, bg='#dde', fg='black')
+menu_arquivo.add_command(label='Fechar', command=app.quit)
+barra_menus.add_cascade(label='Arquivo', menu=menu_arquivo)
+
+menu_editar = Menu(barra_menus, tearoff=0, bg='#dde', fg='black')
+menu_editar.add_command(label='Copiar', command=lambda: copy(current_number['text']))
+menu_editar.add_command(label='Colar', command=lambda: current_number.config(text=verificar_colar(paste())))
+barra_menus.add_cascade(label='Editar', menu=menu_editar)
+
+app.config(bg='white', menu=barra_menus)
 
 # Números e ponto
 Button(app, text='7', command=lambda: calc.click_number(current_number, '7')).place(x=10, y=100, width=45, height=45)
@@ -32,7 +51,14 @@ Button(app, text='÷', command=lambda: calc.dividir(current_number)).place(x=130
 Button(app, text='xʸ', command=lambda: calc.potencia(current_number)).place(x=170, y=50, width=35, height=35)
 Button(app, text='|x|', command=lambda: calc.absoluto(current_number)).place(x=210, y=50, width=35, height=35)
 Button(app, text='C', command=lambda: calc.c(current_number)).place(x=250, y=50, width=35, height=35)
-Button(app, text='=', command=lambda: calc.igual(current_number)).place(x=170, y=280, width=115, height=45)
 Button(app, text='←', command=lambda: calc.backspace(current_number)).place(x=170, y=100, width=115, height=45)
+Button(app, text='sen', command=lambda: calc.seno(current_number)).place(x=170, y=160, width=35, height=45)
+Button(app, text='cos', command=lambda: calc.cosseno(current_number)).place(x=210, y=160, width=35, height=45)
+Button(app, text='tan', command=lambda: calc.tangente(current_number)).place(x=250, y=160, width=35, height=45)
+Button(app, text='-/+', command=lambda: None).place(x=170, y=220, width=35, height=45)
+Button(app, text='x!', command=lambda: None).place(x=210, y=220, width=35, height=45)
+Button(app, text='√', command=lambda: None).place(x=250, y=220, width=35, height=45)
+Button(app, text='=', command=lambda: calc.igual(current_number)).place(x=170, y=280, width=115, height=45)
+
 
 app.mainloop()
