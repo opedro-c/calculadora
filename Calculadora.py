@@ -1,7 +1,10 @@
 class Calculadora:
+    from math import sin, cos, tan, radians
+
     expressao = ''
     historico = {}
     mudar_numero = False
+    graus = True
     
     @classmethod
     def click_number(cls, current_number, new_number):
@@ -11,7 +14,14 @@ class Calculadora:
             else:
                 current_number.config(text='')
             Calculadora.mudar_numero = False
+        elif new_number=='.' and '.' in current_number['text']:
+            return
         current_number.config(text=current_number['text'] + new_number)
+    
+    
+    @classmethod
+    def setGraus(cls, ativado):
+        Calculadora.graus = ativado
     
     
     @classmethod
@@ -27,7 +37,8 @@ class Calculadora:
         Calculadora.expressao = ''
         current_number.config(text='0')
 
-
+    
+    # Expressões Binárias
     @classmethod
     def somar(cls, current_number):
         Calculadora.igual(current_number)
@@ -57,29 +68,6 @@ class Calculadora:
         Calculadora.igual(current_number)
         Calculadora.expressao = current_number['text'] + '**'
     
-    
-    @classmethod
-    def absoluto(cls, current_number):
-        Calculadora.expressao = f"abs({current_number['text']})"
-        current_number.config(text='')
-        Calculadora.igual(current_number)
-    
-    @classmethod
-    def seno(cls, current_number):
-        pass
-    
-    
-    @classmethod
-    def cosseno(cls, current_number):
-        pass
-    
-    
-    @classmethod
-    def tangente(cls, current_number):
-        pass
-    
-    
-        
     @classmethod
     def mostrar_resultado(cls, current_number):
         try:
@@ -91,14 +79,63 @@ class Calculadora:
     
     
     @classmethod
-    def igual(cls, current_number):
+    def gravar_expressao(cls):
         from utilitarios import formatar_expressao, expressao_ok
-        Calculadora.mostrar_resultado(current_number)
         expressao_formatada = formatar_expressao(Calculadora.expressao)
         try:
             if expressao_ok(expressao_formatada):
                 Calculadora.historico[f'{expressao_formatada}'] = eval(Calculadora.expressao)
         except SyntaxError:
-            print(f'Erro de sintaxe em igual {Calculadora.expressao}')
+            print(f'Erro de sintaxe ao gravar expressão {Calculadora.expressao}')
         print(Calculadora.historico)
+        
+        
+    @classmethod
+    def igual(cls, current_number):
+        Calculadora.mostrar_resultado(current_number)
+        Calculadora.gravar_expressao()
         Calculadora.expressao = ''
+    
+    
+    # Expressões Unitárias
+    @classmethod
+    def absoluto(cls, current_number):
+        var = abs(float(current_number['text']))
+        Calculadora.historico[f"|{current_number['text']}|"] = var
+        current_number.config(text=str(var))
+        Calculadora.expressao = ''
+    
+    @classmethod
+    def seno(cls, current_number):
+        if Calculadora.graus:
+            resultado = Calculadora.sin(Calculadora.radians(float(current_number['text'])))
+        else:
+            resultado = Calculadora.sin(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, f"sen({current_number['text']})", resultado)
+    
+    
+    @classmethod
+    def cosseno(cls, current_number):
+        if Calculadora.graus:
+            resultado = Calculadora.cos(Calculadora.radians(float(current_number['text'])))
+        else:
+            resultado = Calculadora.cos(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, f"cos({current_number['text']})", resultado)
+    
+    
+    @classmethod
+    def tangente(cls, current_number):
+        if Calculadora.graus:
+            resultado = Calculadora.tan(Calculadora.radians(float(current_number['text'])))
+        else:
+            resultado = Calculadora.tan(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, f"tan({current_number['text']})", resultado)
+        
+        
+    @classmethod
+    def gravar_mostrar_limpar(cls, current_number, expressao_formatada, resultado):
+        Calculadora.historico[expressao_formatada] = resultado
+        current_number.config(text=str(resultado))
+        Calculadora.expressao = ''
+        Calculadora.mudar_numero = True
+        
