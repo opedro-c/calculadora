@@ -100,10 +100,8 @@ class Calculadora:
     # Expressões Unitárias
     @classmethod
     def absoluto(cls, current_number):
-        var = abs(float(current_number['text']))
-        Calculadora.historico[f"|{current_number['text']}|"] = var
-        current_number.config(text=str(var))
-        Calculadora.expressao = ''
+        resultado = abs(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, f"|{current_number['text']}|", resultado)
     
     @classmethod
     def seno(cls, current_number):
