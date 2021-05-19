@@ -1,5 +1,5 @@
 class Calculadora:
-    from math import sin, cos, tan, radians
+    from math import sin, cos, tan, radians,sqrt, factorial
 
     expressao = ''
     historico = {}
@@ -7,7 +7,17 @@ class Calculadora:
     graus = True
     
     @classmethod
-    def click_number(cls, current_number, new_number):
+    def getHistorico(cls):
+        return Calculadora.historico
+    
+    
+    @classmethod
+    def setGraus(cls, ativado):
+        Calculadora.graus = ativado
+    
+    
+    @classmethod
+    def clicar_numero(cls, current_number, new_number):
         if (current_number['text'] == '0') or Calculadora.mudar_numero:
             if new_number == '.' and Calculadora.mudar_numero:
                 current_number.config(text='0')
@@ -17,11 +27,6 @@ class Calculadora:
         elif new_number=='.' and '.' in current_number['text']:
             return
         current_number.config(text=current_number['text'] + new_number)
-    
-    
-    @classmethod
-    def setGraus(cls, ativado):
-        Calculadora.graus = ativado
     
     
     @classmethod
@@ -128,8 +133,25 @@ class Calculadora:
         else:
             resultado = Calculadora.tan(float(current_number['text']))
         Calculadora.gravar_mostrar_limpar(current_number, f"tan({current_number['text']})", resultado)
+    
+    @classmethod
+    def inverter_valor(cls, current_number):
+        resultado = -float(current_number['text'])
+        Calculadora.gravar_mostrar_limpar(current_number, f"-({current_number['text']})", resultado)
         
-        
+    
+    @classmethod
+    def fatorial(cls, current_number):
+        resultado = Calculadora.factorial(float(current_number))
+        Calculadora.gravar_mostrar_limpar(current_number, f"{current_number['text']}!", resultado)
+
+    
+    
+    @classmethod
+    def raiz_quadrada(cls, current_number):
+        resultado = Calculadora.sqrt(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, f"√{current_number['text']}", resultado)
+    
     @classmethod
     def gravar_mostrar_limpar(cls, current_number, expressao_formatada, resultado):
         Calculadora.historico[expressao_formatada] = resultado

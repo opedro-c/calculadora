@@ -11,8 +11,12 @@ def formatar_expressao(expressao):
 
 
 def expressao_ok(expressao):
-    return not expressao.replace('.', '').isnumeric()
-        
+    if expressao.find('-') == 0:
+        somente_num_negativo = expressao.replace('-', '', 1).replace('.', '').isnumeric()
+        return not somente_num_negativo
+    else:
+        somente_num = expressao.replace('.', '').isnumeric()
+        return not somente_num
 
 def verificar_colar(texto):
     texto_tratado = texto.replace('.','').strip()
