@@ -1,13 +1,16 @@
 class Calculadora:
-    from math import sin, cos, tan, radians,sqrt, factorial
-
+    from math import sin, cos, tan, radians, sqrt, factorial
+    
+    
+    seno, cosseno, tangente = sin, cos , tan
+    raiz_quad, fatorial = sqrt, factorial
     expressao = ''
     historico = {}
     mudar_numero = False
-    graus = True
+    graus = 1
     
     @classmethod
-    def getHistorico(cls):
+    def getHistorico(cls): # Falta implementar
         return Calculadora.historico
     
     
@@ -42,57 +45,34 @@ class Calculadora:
         Calculadora.expressao = ''
         current_number.config(text='0')
 
+
+    @classmethod
+    def inverter_valor(cls, current_number):
+        current_number.config(text=f"-{current_number['text']}")
+
     
     # Expressões Binárias
     @classmethod
-    def somar(cls, current_number):
+    def operacoes_binarias(cls, current_number, operacao):
         Calculadora.igual(current_number)
-        Calculadora.expressao = current_number['text'] + '+'
-        
+        Calculadora.expressao = current_number['text'] + operacao
     
-    @classmethod
-    def subtrair(cls, current_number):
-        Calculadora.igual(current_number)
-        Calculadora.expressao = current_number['text'] + '-'
-    
-    
-    @classmethod
-    def multplicar(cls, current_number):
-        Calculadora.igual(current_number)
-        Calculadora.expressao = current_number['text'] + '*'
-        
-    
-    @classmethod
-    def dividir(cls, current_number):
-        Calculadora.igual(current_number)
-        Calculadora.expressao = current_number['text'] + '/'
-    
-    
-    @classmethod
-    def potencia(cls, current_number):
-        Calculadora.igual(current_number)
-        Calculadora.expressao = current_number['text'] + '**'
     
     @classmethod
     def mostrar_resultado(cls, current_number):
-        try:
-            Calculadora.expressao = Calculadora.expressao + current_number['text']
-            current_number.config(text=str(eval(Calculadora.expressao)))
-            Calculadora.mudar_numero = True
-        except SyntaxError:
-            print(f'Erro de sintaxe ao mostrar resultado {Calculadora.expressao}')
+        Calculadora.expressao = Calculadora.expressao + current_number['text']
+        current_number.config(text=str(eval(Calculadora.expressao)))
+        Calculadora.mudar_numero = True
+        
     
     
     @classmethod
     def gravar_expressao(cls):
         from utilitarios import formatar_expressao, expressao_ok
         expressao_formatada = formatar_expressao(Calculadora.expressao)
-        try:
-            if expressao_ok(expressao_formatada):
-                Calculadora.historico[f'{expressao_formatada}'] = eval(Calculadora.expressao)
-        except SyntaxError:
-            print(f'Erro de sintaxe ao gravar expressão {Calculadora.expressao}')
-        print(Calculadora.historico)
+        if expressao_ok(expressao_formatada):
+            Calculadora.historico[f'{expressao_formatada}'] = eval(Calculadora.expressao)
+        
         
         
     @classmethod
@@ -104,53 +84,19 @@ class Calculadora:
     
     # Expressões Unitárias
     @classmethod
-    def absoluto(cls, current_number):
-        resultado = abs(float(current_number['text']))
-        Calculadora.gravar_mostrar_limpar(current_number, f"|{current_number['text']}|", resultado)
-    
-    @classmethod
-    def seno(cls, current_number):
+    def operacoes_trigonometricas(cls, current_number, func, operacao):
         if Calculadora.graus:
-            resultado = Calculadora.sin(Calculadora.radians(float(current_number['text'])))
+            resultado = func(Calculadora.radians(float(current_number['text'])))
         else:
-            resultado = Calculadora.sin(float(current_number['text']))
-        Calculadora.gravar_mostrar_limpar(current_number, f"sen({current_number['text']})", resultado)
+            resultado = func(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, f"{operacao}({current_number['text']})", resultado)
     
     
     @classmethod
-    def cosseno(cls, current_number):
-        if Calculadora.graus:
-            resultado = Calculadora.cos(Calculadora.radians(float(current_number['text'])))
-        else:
-            resultado = Calculadora.cos(float(current_number['text']))
-        Calculadora.gravar_mostrar_limpar(current_number, f"cos({current_number['text']})", resultado)
-    
-    
-    @classmethod
-    def tangente(cls, current_number):
-        if Calculadora.graus:
-            resultado = Calculadora.tan(Calculadora.radians(float(current_number['text'])))
-        else:
-            resultado = Calculadora.tan(float(current_number['text']))
-        Calculadora.gravar_mostrar_limpar(current_number, f"tan({current_number['text']})", resultado)
-    
-    @classmethod
-    def inverter_valor(cls, current_number):
-        resultado = -float(current_number['text'])
-        Calculadora.gravar_mostrar_limpar(current_number, f"-({current_number['text']})", resultado)
-        
-    
-    @classmethod
-    def fatorial(cls, current_number):
-        resultado = Calculadora.factorial(float(current_number))
-        Calculadora.gravar_mostrar_limpar(current_number, f"{current_number['text']}!", resultado)
+    def operacoes_unitarias(cls, current_number, func, operacao):
+        resultado = func(float(current_number['text']))
+        Calculadora.gravar_mostrar_limpar(current_number, operacao, resultado)
 
-    
-    
-    @classmethod
-    def raiz_quadrada(cls, current_number):
-        resultado = Calculadora.sqrt(float(current_number['text']))
-        Calculadora.gravar_mostrar_limpar(current_number, f"√{current_number['text']}", resultado)
     
     @classmethod
     def gravar_mostrar_limpar(cls, current_number, expressao_formatada, resultado):
@@ -158,4 +104,3 @@ class Calculadora:
         current_number.config(text=str(resultado))
         Calculadora.expressao = ''
         Calculadora.mudar_numero = True
-        

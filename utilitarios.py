@@ -6,21 +6,19 @@ def formatar_expressao(expressao):
         return expressao.replace('**', '^')
     elif '*' in expressao:
         return expressao.replace('*', 'x')
-    else:
-        return expressao
+    return expressao
 
 
 def expressao_ok(expressao):
     if expressao.find('-') == 0:
         somente_num_negativo = expressao.replace('-', '', 1).replace('.', '').isnumeric()
         return not somente_num_negativo
-    else:
-        somente_num = expressao.replace('.', '').isnumeric()
-        return not somente_num
+    somente_num = expressao.replace('.', '').isnumeric()
+    return not somente_num
+
 
 def verificar_colar(texto):
     texto_tratado = texto.replace('.','').strip()
     if texto_tratado.isnumeric():
         return texto_tratado
-    else: 
-        msg.showinfo(title='Calculadora', message='Só pode colar números!')
+    msg.showinfo(title='Calculadora', message='Só pode colar números!')
