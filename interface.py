@@ -13,22 +13,22 @@ app.title('Calculadora')
 # Display
 frame = Frame(app, bg='white', borderwidth=1, relief='solid', width=280, height=30)
 frame.place(x=10, y=10)
-current_number = Label(frame, text='0', bg='white', fg='black', width=34, anchor=E)
-current_number.place(x=0, y=5)
+current_number = Label(frame, text='0', bg='white', fg='black', anchor=E)
+current_number.place(x=0, y=5, width=270)
 
 # Barra de menus
-barra_menus = Menu(app, bg='#dde', fg='black')
+barra_menus = Menu(app, bg='white', fg='black')
 
-menu_arquivo = Menu(barra_menus, tearoff=0, bg='#dde', fg='black')
+menu_arquivo = Menu(barra_menus, tearoff=0, bg='white', fg='black')
 menu_arquivo.add_command(label='Fechar', command=app.quit)
 barra_menus.add_cascade(label='Arquivo', menu=menu_arquivo)
 
-menu_editar = Menu(barra_menus, tearoff=0, bg='#dde', fg='black')
+menu_editar = Menu(barra_menus, tearoff=0, bg='white', fg='black')
 menu_editar.add_command(label='Copiar', command=lambda: copy(current_number['text']))
 menu_editar.add_command(label='Colar', command=lambda: current_number.config(text=verificar_colar(paste())))
 barra_menus.add_cascade(label='Editar', menu=menu_editar)
 
-menu_constantes = Menu(barra_menus, tearoff=0, bg='#dde', fg='black')
+menu_constantes = Menu(barra_menus, tearoff=0, bg='white', fg='black')
 menu_constantes.add_command(label='Pi', command=lambda: current_number.config(text='3.14159265'))
 menu_constantes.add_command(label='Euler', command=lambda: current_number.config(text='0.57721566'))
 menu_constantes.add_command(label='Proporção Áurea', command=lambda: current_number.config(text='1,60217653'))
