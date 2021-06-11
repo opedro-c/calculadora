@@ -7,6 +7,7 @@ from pyperclip import copy, paste
 # Janela
 app = Tk()
 app.geometry('300x380')
+app.resizable(False, False)
 app.title('Calculadora')
 
 
